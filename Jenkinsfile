@@ -15,15 +15,15 @@ pipeline {
                 script {
                     sh '''
                         cd userproj
-                        docker build -t rutukesh/userproj:v0.0.$BUILD_ID . --no-cache'''
+                        docker build -t rutukesh/usermgmnt:v0.0.$BUILD_ID . --no-cache'''
                 }
             }
         }
         stage('pushing image to registry') {
             steps {
                 script {
-                    sh ''' docker push rutukesh/userproj:v0.0.$BUILD_ID 
-                           docker rmi  rutukesh/userproj:v0.0.$BUILD_ID '''
+                    sh ''' docker push rutukesh/usermgmnt:v0.0.$BUILD_ID 
+                           docker rmi  rutukesh/usermgmnt:v0.0.$BUILD_ID '''
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                     cd  userproj
                     kubectl config use-context DEV
                     kubectl apply -f deployment.yaml
-                    kubectl set image deployment/=usermgmtback usermgmtback=rutukesh/userproj:v0.0.$BUILD_ID  -n userapp --record=true'''
+                    kubectl set image deployment/=usermgmtback usermgmtback=rutukesh/usermgmnt:v0.0.$BUILD_ID  -n userapp --record=true'''
                     
                 }
             }
