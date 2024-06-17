@@ -1,13 +1,13 @@
 pipeline {
-  agent {
-    node {
-      label "devops"
+  agent any
+   environment {
+	    DOCKERHUB_CREDENTIALS = credentials('RK-Docker')
     }
-  }
+
     stages {
         stage('checkout code ') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kalpeshkolap/usermgmt.git']]])
+                checkoutgit branch: 'main', credentialsId: 'RK-Git', url: 'https://github.com/rutukeshkoli/usermgmt.git'
             }
         }
         stage('docker build') {
@@ -15,15 +15,15 @@ pipeline {
                 script {
                     sh '''
                         cd userproj
-                        docker build -t kk2104/usermgmtback:v0.0.$BUILD_ID . --no-cache'''
+                        docker build -t rutukesh/usermgmtback:v0.0.$BUILD_ID . --no-cache'''
                 }
             }
         }
         stage('pushing image to registry') {
             steps {
                 script {
-                    sh ''' docker push kk2104/usermgmtback:v0.0.$BUILD_ID 
-                           docker rmi  kk2104/usermgmtback:v0.0.$BUILD_ID '''
+                    sh ''' docker push rutukesh/usermgmtback:v0.0.$BUILD_ID 
+                           docker rmi  rutukesh/usermgmtback:v0.0.$BUILD_ID '''
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
                     cd  userproj
                     kubectl config use-context DEV
                     kubectl apply -f deployment.yaml
-                    kubectl set image deployment/usermgmtback usermgmtback=kk2104/usermgmtback:v0.0.$BUILD_ID  -n userapp --record=true'''
+                    kubectl set image deployment/usermgmtback usermgmtback=rutukesh/usermgmtback:v0.0.$BUILD_ID  -n userapp --record=true'''
                     
                 }
             }
