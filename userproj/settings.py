@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'user',
         'USER': 'admin',
         'PASSWORD': 'Kalpesh2104',
-        'HOST':'userapp.cvmco8oaaiv0.us-west-2.rds.amazonaws.com',
+        'HOST':'mydb.cr4gqgomys4v.ap-south-1.rds.amazonaws.com',
         'PORT':'3306',
     }
 }
